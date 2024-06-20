@@ -2,15 +2,15 @@
 
 Sub GetBroker(Host)
     Dim ws As Worksheet
-    Set wb = Workbooks("GenericTracker.xlsm") ' Name changed to a generic tracker
-    Set ws = wb.Sheets("MainSheet") ' Changed to a more generic sheet name
+    Set wb = Workbooks("GenericTracker.xlsm") '
+    Set ws = wb.Sheets("MainSheet") 
     Dim currentCell As Range
     Set currentCell = ws.Range("A4") 
     Dim screenHeader As String
     Host.WaitReady 10, 0
     Host.ReadScreen screenHeader, 27, 2, 28
     screenHeader = CleanText(screenHeader)
-    If screenHeader <> "CUSTOMS BROKER CHANGE ENTRY" Then
+    If screenHeader <> "SCREEN_HEADER" Then
         MsgBox "You're not on the correct screen", vbCritical, "Error"
         Exit Sub
     End If

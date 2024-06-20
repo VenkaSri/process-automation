@@ -5,7 +5,7 @@
 Sub FurtherProcessing()
     
     Dim ws As Worksheet
-    Set ws = Workbooks("EscapeeTracker.xlsm").Sheets("Sheet1")
+    Set ws = Workbooks("Generic.xlsm").Sheets("Sheet1")
 
     Dim currentCell As Range
     Set currentCell = ws.Range("A4")
@@ -37,12 +37,11 @@ Sub FurtherProcessing()
             ws.Cells(currentCell.Row, 3).Value = "Released"
             currentCell.Interior.Color = RGB(245, 245, 245)
         ElseIf (brokerRelease = "No" Or brokerRelease = "Yes") And UserHoldInList(userHold) And clearanceRequired = "No" Then
-            ws.Cells(currentCell.Row, 3).Value = "LVS Shipment, ok to move."
+            ws.Cells(currentCell.Row, 3).Value = "ok to move."
             currentCell.Interior.Color = RGB(245, 245, 245)
         End If
 
 NextIteration:
-        ' Move to the next cell
         Set currentCell = currentCell.Offset(1, 0)
     Loop
 End Sub

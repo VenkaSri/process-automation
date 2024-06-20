@@ -2,7 +2,7 @@
 
 Sub GetTrans(Host)
     Dim ws As Worksheet
-    Set wb = Workbooks("EscapeeTracker.xlsm")
+    Set wb = Workbooks("GenericName.xlsm")
     Set ws = wb.Sheets("Sheet1")
     
     Dim currentCell As Range
@@ -18,7 +18,7 @@ Sub GetTrans(Host)
         Host.ReadScreen BufV, 21, 2, 29
         BufV = Trim(BufV)
         
-        If BufV <> "Destination Dashboard" Then
+        If BufV <> "SCREEN_HEADER" Then
             MsgBox "You're not on Dashboard", vbCritical, "Error"
             Exit Sub
         End If
@@ -47,13 +47,13 @@ Sub GetTrans(Host)
             currentCell.Offset(0, 4).Value = BrkRel
             currentCell.Offset(0, 5).Value = UsrHold
             If BrkRel = "Yes" Then
-                    If RType = "Released" Then
+                    If RType = "SOMETHING" Then
                         Released Host, currentCell
-                    ElseIf RType = "Customs Stamped Copy" Then
-                        currentCell.Offset(0, 7).Value = "Stamp Released"
+                    ElseIf RType = "SOMETHING" Then
+                        currentCell.Offset(0, 7).Value = "SOMETHING"
                     ElseIf InStr(RType, "RNS Doc") > 0 Then
                         Host.ReadScreen TransNumRNS, 14, 9, 33
-                        currentCell.Offset(0, 7).Value = "RNS Doc: Transaction #" & TransNumRNS
+                        currentCell.Offset(0, 7).Value = "SOMETHING" & TransNumRNS
                     End If
             Else
                 NoReleaseTrans Host, currentCell
@@ -85,16 +85,16 @@ Sub Released(Host, currentCell As Range)
 
         For i = startRow To 20
             Host.ReadScreen Buf, 10, i, 13
-            If Trim(Buf) = "FTNEDI" Or Trim(Buf) = "CANAK6124K" Then
+            If Trim(Buf) = "SOMETHING" Or Trim(Buf) = "SOMETHING" Then
                 Host.ReadScreen Cmmt, 17, i, 24
-                If Trim(Cmmt) = "RELEASED" Or Trim(Cmmt) = "OKTOLOAD" Then
+                If Trim(Cmmt) = "SOMETHING" Or Trim(Cmmt) = "SOMETHING" Then
                     Host.ReadScreen Trans, 14, i, 65
                     currentCell.Offset(0, 7).Value = "Transaction #" & Trans
                     Host.SendKey "<PF12>"
                     Exit Do
-                ElseIf Cmmt = "User Hold Release" Then
+                ElseIf Cmmt = "SOMETHING" Then
                     Host.ReadScreen usrRel, 17, i, 65
-                    currentCell.Offset(0, 7).Value = "User Hold Release"
+                    currentCell.Offset(0, 7).Value = "SOMETHING"
                     Host.SendKey "<PF12>"
                     Exit Do
                 Else
@@ -114,7 +114,7 @@ End Sub
 
 Sub NoReleaseTrans(Host, currentCell As Range)
     Host.SetCursor 9, 2
-    Host.SendKeys "3<Enter>"
+    Host.SendKeys "<Enter>"
     Host.WaitReady 10, 0
 
     Dim Buf As String
@@ -130,11 +130,11 @@ Sub NoReleaseTrans(Host, currentCell As Range)
 
         For i = startRow To 20
             Host.ReadScreen Buf, 6, i, 13
-            If InStr(Buf, "FTNEDI") > 0 Then
+            If InStr(Buf, "SOMETHING") > 0 Then
                 Host.ReadScreen Cmmt, 8, i, 24
-                If Cmmt = "RELEASED" Or Cmmt = "OKTOLOAD" Then
+                If Cmmt = "SOMETHING" Or Cmmt = "SOMETHING" Then
                     Host.ReadScreen Trans, 14, i, 65
-                    currentCell.Offset(0, 7).Value = "Not released but has a transaction #" & Trans
+                    currentCell.Offset(0, 7).Value = "SOMETHING" & Trans
                     Host.SendKey "<PF12>"
                     Exit Do
                 Else

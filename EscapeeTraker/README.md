@@ -3,8 +3,9 @@
 ## Overview
 EscapeeTracker is a VBA Excel-based tool designed to streamline the process of tracking shipments potentially without a valid customs release. Originally developed to aid coworkers tasked with identifying such "escapees" from SAP data, this tool has transformed the labor-intensive process into a swift and automated task.
 
+
 ## How it Works
-1. **Automated Tracking:** Users paste the SAP data into Excel. With a simple click on 'RUN', the tool automatically tracks each shipment's status across multiple platforms.
+1. **Automated Tracking:** Users paste the SAP data into Excel (Just the shipment number and tracking number). With a simple click on 'RUN', the tool automatically tracks each shipment's status across multiple platforms.
 2. **Quick Status Verification:** EscapeeTracker integrates various logistics data directly into Excel, enabling the immediate identification of shipments that have escaped without the necessary customs release.
 
 ## Key Benefits
@@ -12,8 +13,13 @@ EscapeeTracker is a VBA Excel-based tool designed to streamline the process of t
 - **Enhanced Accuracy:** Automates tracking and reduces human error in the verification process.
 - **User-Friendly Interface:** Easy to use with minimal training required.
 
-## Access
-This repository is private and hosted on GitHub, with restricted access managed through GitFront. A specific link has been generated to allow view-only access to potential employers and collaborators who have this link. If you have access to this link via my resume or direct sharing, you will be able to view the repository contents. Please contact me directly if you encounter any issues with accessing the repository or if the link was not provided.
 
-## Contributions
-Although this project is not open for public contribution, feedback and suggestions are always welcome to improve its functionality and efficiency.
+# Visual Overview
+Included in this repository is a screenshot demonstrating the user interface of EscapeeTracker. This image shows how users can interact with the tool, including buttons for 'RUN' and 'CLEAR', and columns displaying shipment data, status, and other relevant details. Please note, the data in the screenshot has been anonymized to protect confidentiality.
+
+![alt text](main.png "Tracker")
+
+![alt text](final.png "Tracker")
+
+## Acknowledgments
+- Thanks to my coworkers for their invaluable feedback and suggestions that have significantly improved the functionality and usability of this tracker.

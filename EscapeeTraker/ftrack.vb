@@ -5,7 +5,7 @@ Sub FTRACK()
     
     Dim driver As New WebDriver
     Dim wb As Workbook
-    Set wb = Workbooks("EscapeeTracker.xlsm")
+    Set wb = Workbooks("Generic.xlsm")
     Dim ws As Worksheet
     Set ws = wb.Sheets("Sheet1")
     Dim wsScans As Worksheet
@@ -19,7 +19,7 @@ Sub FTRACK()
     'driver.AddArgument "--disable-gpu"
     'driver.AddArgument "--window-size=1920,1080"
     driver.Start "chrome", ""
-    driver.Get "http://ftrack.gss.ground.fedex.com:8085/cgi-bin/PKG621CL?IIWEBI="
+    driver.Get "url"
 
     frmProgress.Show vbModeless
     
@@ -81,7 +81,7 @@ Sub FillForm(driver As WebDriver, inputValue As String)
     On Error GoTo ErrHandler
     
     Dim inputField As Object
-    Set inputField = driver.FindElementByName("iitraks", timeout:=1000)
+    Set inputField = driver.FindElementByName("SOMEid", timeout:=1000)
     inputField.Clear
     inputField.SendKeys inputValue
     driver.FindElementByName("submit", timeout:=1000).Click
@@ -198,7 +198,7 @@ Sub ProcessSecondTable(secondTable As Object, currentCell As Range, wsScans As W
     For Each row In rows
         Set cells = row.FindElementsByTag("td")
         If cells.Count >= statusColumn Then
-            If Not collectScans And cells.Item(locationColumn).text = "6124-TORO-A" Then
+            If Not collectScans And cells.Item(locationColumn).text = "LOC" Then
                 collectScans = True
                 found6124TOROA = True
             End If

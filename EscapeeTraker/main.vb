@@ -27,7 +27,7 @@ Sub Main()
 
     CloseHostSession Host
 
-    ' Perform local workbook tasks
+
     PITT3Main
     FurtherProcessing
     FTRACK
@@ -52,7 +52,7 @@ Function InitializeHost(ByVal zadFile As String) As Object
 
     ResultCode = Host.Connect("!")
     If ResultCode <> 0 Then
-        MsgBox "Error connecting to session B!", vbCritical
+        MsgBox "Error connecting to session", vbCritical
         Set InitializeHost = Nothing
         Exit Function
     End If
