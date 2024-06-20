@@ -1,4 +1,4 @@
-' This module is for calling zipments API to check for release
+' This module is for calling a generic API to check for release status
 
 Sub CallAPI(currentCell As Range)
     Dim xhr As Object
@@ -13,14 +13,13 @@ Sub CallAPI(currentCell As Range)
     Dim portCode As Variant
     Dim statusStr As Variant
     
-
     Set xhr = CreateObject("MSXML2.XMLHTTP")
-    apiKey = <REDACTED>
-    parsNumber = "2314S4" & currentCell.Value
-    url = "https://api.zipments.io/pars/" & parsNumber
+    apiKey = "Your-API-Key-Here" 
+    parsNumber = "GenericPrefix" & currentCell.Value 
+    url = "https://api.genericdomain.com/status/" & parsNumber 
 
     xhr.Open "GET", url, False
-    xhr.setRequestHeader "Authorization", apiKey
+    xhr.setRequestHeader "Authorization", "Bearer " & apiKey
     xhr.Send
 
     If xhr.status = 200 Then
@@ -40,36 +39,39 @@ Sub CallAPI(currentCell As Range)
 
         If Not Json Is Nothing Then
             If Json.Exists("data") Then
-                If Json("data").Exists("parsData") Then
-                    If Json("data")("parsData").Exists("currentStatusType") Then
-                        currentStatusType = Json("data")("parsData")("currentStatusType")
+                If Json("data").Exists("statusData") Then
+                    If Json("data")("statusData").Exists("currentStatusType") Then
+                        currentStatusType = Json("data")("statusData")("currentStatusType")
                     End If
                     
-                    If Json("data")("parsData").Exists("transactionNumber") Then
-                        transNumber = Json("data")("parsData")("transactionNumber")
+                    If Json("data")("statusData").Exists("transactionNumber") Then
+                        transNumber = Json("data")("statusData")("transactionNumber")
                     End If
                     
-                    If Json("data")("parsData").Exists("releaseCode") Then
-                        relCode = Json("data")("parsData")("releaseCode")
+                    If Json("data")("statusData").Exists("releaseCode") Then
+                        relCode = Json("data")("statusData")("releaseCode")
                     End If
-                    If Json("data")("parsData").Exists("portCode") Then
-                        portCode = Json("data")("parsData")("portCode")
+                    
+                    If Json("data")("statusData").Exists("portCode") Then
+                        portCode = Json("data")("statusData")("portCode")
                     End If
-                    If Json("data")("parsData").Exists("statusString") Then
-                        statusStr = Json("data")("parsData")("portCode")
+                    
+                    If Json("data")("statusData").Exists("statusString") Then
+                        statusStr = Json("data")("statusData")("statusString")
                     End If
                 Else
-                    MsgBox "parsData key not found"
+                    MsgBox "Status data key not found"
                 End If
             Else
-                MsgBox "data key not found"
+                MsgBox "Data key not found"
             End If
         Else
             MsgBox "JSON response is empty"
         End If
+
         If currentStatusType = "released" Then
-            currentCell.Offset(0, 2).Value = "Released (PARS TRACKER)"
-            currentCell.Offset(0, 7).Value = transNumber & "At port: " & portCode
+            currentCell.Offset(0, 2).Value = "Released (Status Updated)"
+            currentCell.Offset(0, 7).Value = transNumber & " at Port: " & portCode
             currentCell.Interior.Color = RGB(245, 245, 245)
         End If
     Else
@@ -78,5 +80,3 @@ Sub CallAPI(currentCell As Range)
 
     Set xhr = Nothing
 End Sub
-
-

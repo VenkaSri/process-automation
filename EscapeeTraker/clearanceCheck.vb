@@ -1,9 +1,9 @@
-' Checks weather clearance is required for shipments
+' Checks whether clearance is required for shipments
 
 Sub ClearanceReq(Host)
     Dim ws As Worksheet
-    Set wb = Workbooks("EscapeeTracker.xlsm")
-    Set ws = wb.Sheets("Sheet1")
+    Set wb = Workbooks("GenericTracker.xlsm")
+    Set ws = wb.Sheets("MainSheet")
     
     Dim currentCell As Range
     Set currentCell = ws.Range("A4")
@@ -13,20 +13,18 @@ Sub ClearanceReq(Host)
         cellContent = Trim(currentCell.Value)
         InteractWithHost Host, cellContent, currentCell
         
-        
-        
 Skip:
         Set currentCell = currentCell.Offset(1, 0)
     Loop
 End Sub
 
 Sub InteractWithHost(Host, ByVal cellContent As String, currentCell As Range)
-    Dim BufV As String
+    Dim screenBuffer As String
         Host.WaitReady 10, 0
-        Host.ReadScreen BufV, 9, 2, 72
-        BufV = Trim(BufV)
+        Host.ReadScreen screenBuffer, 9, 2, 72
+        screenBuffer = Trim(screenBuffer)
         
-        If BufV <> "INTD010A" Then
+        If screenBuffer <> "SCREEN_HEADER" Then ' Generic placeholder for screen identifier
             MsgBox "Not on the Entry Menu", vbCritical, "Error"
             Exit Sub
         End If
@@ -46,26 +44,26 @@ Sub InteractWithHost(Host, ByVal cellContent As String, currentCell As Range)
         Host.WaitReady 10, 0
         
         Dim anotherShipment As String
-        Dim anotherShipmentNum As String
         Host.ReadScreen anotherShipment, 32, 24, 2
 
-        If anotherShipment = "Track ID is on another shipment:" Then
+        If anotherShipment = "Additional information found:" Then
+            Dim anotherShipmentNum As String
             Host.ReadScreen anotherShipmentNum, 10, 24, 40
             anotherShipmentNum = Trim(anotherShipmentNum)
             currentCell.Value = anotherShipmentNum
             Call InteractWithHost(Host, anotherShipmentNum, currentCell)
         End If
 
-        Dim ShipmentProcess As String
-        Host.ReadScreen ShipmentProcess, 19, 8, 31
-        Dim ShipmentNumChange As String
-        Host.ReadScreen ShipmentNumChange, 9, 8, 48
-        Dim ShipmentCannot As String
-        Host.ReadScreen ShipmentCannot, 9, 10, 49
+        Dim shipmentProcess As String
+        Host.ReadScreen shipmentProcess, 19, 8, 31
+        Dim shipmentNumChange As String
+        Host.ReadScreen shipmentNumChange, 9, 8, 48
+        Dim shipmentCannot As String
+        Host.ReadScreen shipmentCannot, 9, 10, 49
         Dim isShipmentProcessed As Boolean
         isShipmentProcessed = False
         
-        If ShipmentNumChange = "cannot be" Then
+        If shipmentNumChange = "cannot be" Then
             currentCell.Offset(0, 2) = "Shipment number has been changed."
             currentCell.Interior.Color = RGB(221, 221, 221)
             Host.WaitReady 10, 0
@@ -74,9 +72,8 @@ Sub InteractWithHost(Host, ByVal cellContent As String, currentCell As Range)
             Exit Sub
         End If
         
-        
-        If ShipmentCannot = "cannot be" Then
-            currentCell.Offset(0, 2) = "RTS Shipment"
+        If shipmentCannot = "cannot be" Then
+            currentCell.Offset(0, 2) = "Return to Sender"
             currentCell.Interior.Color = RGB(221, 221, 221)
             Host.WaitReady 10, 0
             Host.SendKey "<PF12>"
@@ -84,16 +81,15 @@ Sub InteractWithHost(Host, ByVal cellContent As String, currentCell As Range)
             Exit Sub
         End If
         
-
         If Not isShipmentProcessed Then
             Dim Buf As String
             Do
                 Host.ReadScreen Buf, 9, 2, 72
                 Buf = Trim(Buf)
-                If Buf = "INTD010A" Then
+                If Buf = "SCREEN_HEADER" Then ' Adjusted generic placeholder
                     Dim attemptCount As Integer
                     attemptCount = 0
-                    Do While attemptCount < 5 And Buf = "INTD010A"
+                    Do While attemptCount < 5 And Buf = "SCREEN_HEADER"
                         Host.SendKeys "<Enter>"
                         Host.WaitReady 10, 0
                         Host.ReadScreen Buf, 9, 2, 72
@@ -101,7 +97,7 @@ Sub InteractWithHost(Host, ByVal cellContent As String, currentCell As Range)
                         attemptCount = attemptCount + 1
                     Loop
                 End If
-                If Buf = "INTD010D" Then
+                If Buf = "DETAIL_SCREEN" Then ' Another generic placeholder
                     Host.ReadScreen Bkr, 1, 21, 30
                     If Bkr <> "Y" Then
                         currentCell.Offset(0, 6).Value = "No"
@@ -125,9 +121,9 @@ Sub NavigateBack(Host)
         Host.ReadScreen Buf, 9, 2, 72
         Buf = Trim(Buf)
         
-        If Buf = "INTD010A" Then
+        If Buf = "SCREEN_HEADER" Then
             Exit Do
-        ElseIf Buf = "INTD10C3" Then
+        ElseIf Buf = "NAVIGATION_SCREEN" Then ' Generic placeholder
             Host.SendKeys "<F11>"
             Host.WaitReady 10, 0
         Else
