@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the `process-automation` repository! My name is Venkatesh Sritharan, and I have been working as a Customs Associate at FedEx Ground, a non-tech. Despite this, I've leveraged my programming knowledge to create various tools that have transformed our workflows, increasing efficiency and accuracy significantly. This repository is a collection of those automation tools, each designed to address specific operational challenges within our team and beyond.
+Welcome to the `process-automation` repository! My name is Venkatesh Sritharan, and I have been working as a Customs Associate at FedEx Ground, a non-tech position. Despite this, I've leveraged my programming knowledge to create various tools that have transformed our workflows, increasing efficiency and accuracy significantly. This repository is a collection of those automation tools, each designed to address specific operational challenges within our team and beyond.
 
 ## Impact
 
@@ -14,7 +14,7 @@ Bringing technology into a non-technical role, I have developed solutions that a
 
 This repository includes several projects I've developed, including:
 
-- **EscapeeTracker**: A VBA Excel-based tool that automates the tracking of shipments potentially without a valid customs release. For more details, see the [EscapeeTracker](./EscapeeTracker/README.md) directory.
+- **EscapeeTracker**: A VBA Excel-based tool that automates the tracking of shipments potentially without a valid customs release. For more details, see the [EscapeeTracker](https://github.com/VenkaSri/process-automation/tree/main/EscapeeTraker) directory.
 
 ### Adding More Projects
 
